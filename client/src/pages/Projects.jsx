@@ -1,6 +1,4 @@
-// Projects page: shows one card for each project in the list
 
-// List of my projects. To add a new project, add a new item here.
 const projects = [
   {
     title: "Personal Portfolio Website",

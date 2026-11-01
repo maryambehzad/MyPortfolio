@@ -1,104 +1,89 @@
-// Contact page: my contact details and a message form
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Card, CardContent, Typography, TextField, Button, Box } from '@mui/material';
 
-function Contact() {
-  // navigate is used to go back to the Home page
-  const navigate = useNavigate();
-
-  // This saves what the visitor types in the form
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    contactNumber: "",
+export default function Contact() {
+  const [values, setValues] = useState({
+    firstname: "",
+    lastname: "",
     email: "",
-    message: "",
   });
 
-  // This runs every time the visitor types something
-  const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
+  const submitForm = async (data) => {
+    try {
+      let response = await fetch('/api/contacts', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      let result = await response.json();
+      if (result.error) {
+        console.log(result.error);
+      } else {
+        setValues({ firstname: "", lastname: "", email: "" });
+        alert("Contact saved successfully!");
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
   };
 
-  // This runs when the visitor presses Send Message
-  const handleSubmit = (event) => {
-    event.preventDefault(); // stop the page from reloading
-    console.log("Form submitted:", formData); // show the data in the console
-    alert("Thank you, " + formData.firstName + "! Your message was received.");
-    navigate("/"); // go back to the Home page
+  const handleChange = (name) => (event) => {
+    setValues({ ...values, [name]: event.target.value });
   };
 
   return (
-    <div className="page">
-      <h1>Contact Me</h1>
-
-      <div className="contact-layout">
-        {/* My contact information */}
-        <div className="contact-info">
-          <h2>Contact Information</h2>
-          <p><strong>Name:</strong> Maryam Behzad</p>
-          <p>
-            <strong>Email:</strong>{" "}
-            <a href="mailto:maryam.behzad.kh@gmail.com">
-              maryam.behzad.kh@gmail.com
-            </a>
-          </p>
-        </div>
-
-        {/* The message form */}
-        <form className="contact-form" onSubmit={handleSubmit}>
-          <h2>Send Me a Message</h2>
-
-          <label>First Name</label>
-          <input
-            type="text"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-            required
-          />
-
-          <label>Last Name</label>
-          <input
-            type="text"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            required
-          />
-
-          <label>Contact Number</label>
-          <input
-            type="tel"
-            name="contactNumber"
-            value={formData.contactNumber}
-            onChange={handleChange}
-            required
-          />
-
-          <label>Email Address</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-
-          <label>Message</label>
-          <textarea
-            name="message"
-            rows="5"
-            value={formData.message}
-            onChange={handleChange}
-            required
-          ></textarea>
-
-          <button type="submit" className="button">Send Message</button>
-        </form>
-      </div>
+    <div className="page-center">
+      <Card sx={{ width: '100%', maxWidth: 500, padding: "30px", boxShadow: 3, borderRadius: 2 }}>
+        <CardContent>
+          <Typography variant="h4" align="center" gutterBottom sx={{ fontWeight: 'bold', color: '#1f2a44' }}>
+            Contact Us
+          </Typography>
+          <form onSubmit={handleSubmit(submitForm)}>
+            <Box display="flex" flexDirection="column" gap={2}>
+              <TextField
+                fullWidth
+                label="First Name"
+                variant="outlined"
+                {...register("firstname", { required: "First name is required" })}
+                value={values.firstname}
+                onChange={handleChange('firstname')}
+                error={!!errors.firstname}
+                helperText={errors.firstname ? errors.firstname.message : ""}
+              />
+              <TextField
+                fullWidth
+                label="Last Name"
+                variant="outlined"
+                {...register("lastname", { required: "Last name is required" })}
+                value={values.lastname}
+                onChange={handleChange('lastname')}
+                error={!!errors.lastname}
+                helperText={errors.lastname ? errors.lastname.message : ""}
+              />
+              <TextField
+                fullWidth
+                label="Email"
+                type="email"
+                variant="outlined"
+                {...register("email", { required: "Email is required" })}
+                value={values.email}
+                onChange={handleChange('email')}
+                error={!!errors.email}
+                helperText={errors.email ? errors.email.message : ""}
+              />
+              <Button type="submit" variant="contained" color="primary" fullWidth sx={{ backgroundColor: '#1f2a44', padding: '12px', fontWeight: 'bold' }}>
+                Submit Contact
+              </Button>
+            </Box>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }
-
-export default Contact;

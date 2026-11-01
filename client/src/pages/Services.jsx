@@ -1,6 +1,4 @@
-// Services page: shows one card for each service
 
-// List of my services. To add a new service, add a new item here.
 const services = [
   {
     title: "Web Development",

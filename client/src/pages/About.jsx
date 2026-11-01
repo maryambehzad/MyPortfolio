@@ -1,4 +1,4 @@
-// About page: my photo, short story and resume link
+
 function About() {
   return (
     <div className="page about">

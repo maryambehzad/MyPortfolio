@@ -22,9 +22,7 @@ import authRoutes from "./routes/auth.routes.js";
 mongoose.Promise = global.Promise;
 mongoose
   .connect(config.mongoUri, {
-    //useNewUrlParser: true,
-    //useCreateIndex: true,
-    //useUnifiedTopology: true
+    
   })
   .then(() => {
     console.log("Connected to the database!");
@@ -34,14 +32,14 @@ mongoose.connection.on("error", () => {
   throw new Error(`unable to connect to database: ${config.mongoUri}`);
 });
 
-// Middleware for cookies
+
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to User application." });
 });
 
-// Use the modular routes & authentication routes
+
 app.use("/", contactRoutes);
 app.use("/", projectRoutes);
 app.use("/", qualificationRoutes);

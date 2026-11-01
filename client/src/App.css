@@ -233,3 +233,14 @@
   cursor: pointer;
   font-size: 16px;
 }
+
+/* Center all page containers horizontally and vertically */
+.page-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  min-height: calc(100vh - 80px);
+  padding: 20px;
+  box-sizing: border-box;
+}

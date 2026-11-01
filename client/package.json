@@ -11,8 +11,12 @@
     "deploy": "npm run build && cp dist/index.html dist/404.html && gh-pages -d dist"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/material": "^9.5.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-hook-form": "^7.91.0",
     "react-router-dom": "^7.18.4"
   },
   "devDependencies": {

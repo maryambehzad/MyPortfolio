@@ -1,6 +1,5 @@
-// Education page: shows my studies
 
-// List of my education. To add more, add a new item here.
+
 const educationList = [
   {
     program: "Game Programming",

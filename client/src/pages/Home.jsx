@@ -1,4 +1,4 @@
-// Home page: welcome message, mission and a button to the About page
+
 import { Link } from "react-router-dom";
 
 function Home() {
